@@ -3,7 +3,7 @@ namespace yzyblog\coffice_service;
 
 use dekuan\delib\CLib;
 
-Class CAuth{
+Class CofficeAuth{
 
     /**
      * Input
@@ -86,7 +86,7 @@ Class CAuth{
 
 
     /**
-     * @return CAuth
+     * @return CofficeAuth
      */
     static function GetInstance()
     {

@@ -3,7 +3,7 @@ namespace yzyblog\coffice_service;
 
 use dekuan\delib\CLib;
 
-Class CUser
+Class CofficeUser
 {
 
 
@@ -19,7 +19,7 @@ Class CUser
     protected static $g_cStaticInstance;
 
     /**
-     * @return CUser
+     * @return CofficeUser
      */
     static function GetInstance()
     {
@@ -51,7 +51,7 @@ Class CUser
         if(  CLib::IsArrayWithKeys ( $this->arrInput, ['username', 'password'] )
           && CLib::IsExistingString( $this->arrInput['username'] )
           && CLib::IsExistingString( $this->arrInput['password'] )
-          && CAuth::GetInstance()->initialize()
+          && CofficeAuth::GetInstance()->initialize()
         )
         {
             $nExist = app('db')->table('_User')->where('username', $this->arrInput['username'])->count();
@@ -103,7 +103,7 @@ Class CUser
         if(  CLib::IsArrayWithKeys ( $this->arrInput, ['username', 'password'] )
             && CLib::IsExistingString( $this->arrInput['username'] )
             && CLib::IsExistingString( $this->arrInput['password'] )
-            && CAuth::GetInstance()->initialize()
+            && CofficeAuth::GetInstance()->initialize()
         )
         {
             $arrExist = app('db')->table('_User')->where('username', $this->arrInput['username'])->first();
@@ -167,7 +167,7 @@ Class CUser
 
         if(  CLib::IsArrayWithKeys ( $this->arrInput, ['password'] )
           && CLib::IsExistingString( $this->arrInput['password'] )
-          && CAuth::GetInstance()->initialize()
+          && CofficeAuth::GetInstance()->initialize()
         )
         {
             $where = [];
@@ -236,7 +236,7 @@ Class CUser
         // 数据过滤
         $this->arrInput = app('request')->input();
 
-        $this->userObjectId   = CAuth::GetInstance()->getUserObjectID();
+        $this->userObjectId   = CofficeAuth::GetInstance()->getUserObjectID();
     }
 
 }

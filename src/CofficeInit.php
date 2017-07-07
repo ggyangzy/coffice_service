@@ -28,7 +28,7 @@ class CofficeInit
             ]
         ];
 
-        if( CAuth::GetInstance()->initialize() )
+        if( CofficeAuth::GetInstance()->initialize() )
         {
             if ( ! app('db')->connection('mongodb_coffice')->table('app_list')->where('dbs',$dbs)->first() )
             {

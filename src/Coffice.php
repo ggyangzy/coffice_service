@@ -105,7 +105,7 @@ Class Coffice
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CAuth::GetInstance()->initialize() )
+        if( CofficeAuth::GetInstance()->initialize() )
         {
             $result = array();
             $nRet = CofficeConst::ERROR_SUCCESS;
@@ -159,7 +159,7 @@ Class Coffice
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CAuth::GetInstance()->initialize() )
+        if( CofficeAuth::GetInstance()->initialize() )
         {
             $result = array();
 
@@ -206,7 +206,7 @@ Class Coffice
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CAuth::GetInstance()->initialize() )
+        if( CofficeAuth::GetInstance()->initialize() )
         {
             if( $this->_SaveData( $arrOutPutData, $sErroeMsg ) )
             {
@@ -232,7 +232,7 @@ Class Coffice
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CAuth::GetInstance()->initialize() )
+        if( CofficeAuth::GetInstance()->initialize() )
         {
             $this->_getDBACL( 'write' );
 
@@ -259,7 +259,7 @@ Class Coffice
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CAuth::GetInstance()->initialize() )
+        if( CofficeAuth::GetInstance()->initialize() )
         {
             $arrId = explode( '.', $this->m_sUseClassID );
 
@@ -1025,15 +1025,15 @@ Class Coffice
         // 获取默认分页条数
         $this->m_itake      = CofficeConst::$m_itake;
 
-        $this->m_sDBTableName  = CAuth::GetInstance()->getUseClassName();
+        $this->m_sDBTableName  = CofficeAuth::GetInstance()->getUseClassName();
 
-        $this->m_bUseMaster    = CAuth::GetInstance()->isUseMasterKey();
+        $this->m_bUseMaster    = CofficeAuth::GetInstance()->isUseMasterKey();
 
-        $this->m_sUseClassID   = CAuth::GetInstance()->getUseClassID();
+        $this->m_sUseClassID   = CofficeAuth::GetInstance()->getUseClassID();
 
-        $this->m_sUserObjectID = CAuth::GetInstance()->getUserObjectID();
+        $this->m_sUserObjectID = CofficeAuth::GetInstance()->getUserObjectID();
 
-        $this->m_arrUserRole   = CAuth::GetInstance()->getUserRole();
+        $this->m_arrUserRole   = CofficeAuth::GetInstance()->getUserRole();
 
         $this->m_oDBLink       = app('db')->table( $this->m_sDBTableName );
     }
