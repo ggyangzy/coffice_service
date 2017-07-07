@@ -3,6 +3,13 @@ namespace yzyblog\coffice_service;
 
 class CofficeInit
 {
+    /**
+     * 创建/初始化 应用
+     * @param string $dbs
+     * @param $arrOutPutData
+     * @param $sErroeMsg
+     * @return int
+     */
     public static function initAppList( $dbs = 'coffice_manager', & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
@@ -40,31 +47,19 @@ class CofficeInit
 
         if( $nCall )
         {
-            $setupTablesName = [
-                '_id'       => Coffice::getRandomID(),
-                'className' => CofficeConst::$m_str_Class_User,
-                'ACL'       => [
-                    '*' => [
-                        'read'  => true,
-                        'write' => true,
-                    ]
-                ],
-                'columnACL' => [
-                    '*' => [
-                        'read'  => true,
-                        'write' => true,
-                    ]
-                ]
-            ];
+            $arrDefaultTables   = array();
+            $arrDefaultTables[] = array_merge( [ '_id' => Coffice::getRandomID(), 'className' => CofficeConst::$m_str_Class_User ], CofficeConst::$m_arr_DefaultACL );
+            $arrDefaultTables[] = array_merge( [ '_id' => Coffice::getRandomID(), 'className' => CofficeConst::$m_str_Class_Role ], CofficeConst::$m_arr_DefaultACL );
+            $arrDefaultTables[] = array_merge( [ '_id' => Coffice::getRandomID(), 'className' => CofficeConst::$m_str_Class_Relation ], CofficeConst::$m_arr_DefaultACL );
 
-            foreach ( CofficeConst::$m_arr_UserColumnList as $k => & $val )
-            {
-                $val['_id'] = Coffice::getRandomID();
-            }
+            $arrUserColumnList = array_map( array( __CLASS__, "setClassObjectId"), CofficeConst::$m_arr_UserColumnList );
+            $arrRoleColumnList = array_map( array( __CLASS__, "setClassObjectId"), CofficeConst::$m_arr_RoleColumnList );
+            $arrRelationColumnList = array_map( array( __CLASS__, "setClassObjectId"), CofficeConst::$m_arr_RelationColumnList );
+            $arrDefaultTablesColumnList = array_merge( $arrUserColumnList, $arrRoleColumnList, $arrRelationColumnList );
 
             app('config')->set('database.connections.mongodb_account.database', $arrInit['dbs'] );
-            app('db')->table( CofficeConst::$m_str_SetupTablesName )->insert( $setupTablesName );
-            app('db')->table( CofficeConst::$m_str_SetupTablesColumn )->insert( CofficeConst::$m_arr_UserColumnList );
+            app('db')->table( CofficeConst::$m_str_SetupTablesName )->insert( $arrDefaultTables );
+            app('db')->table( CofficeConst::$m_str_SetupTablesColumn )->insert( $arrDefaultTablesColumnList );
 
             $nRet = CofficeConst::ERROR_SUCCESS;
             $arrOutPutData = [
@@ -80,5 +75,16 @@ class CofficeInit
         }
 
         return $nRet;
+    }
+
+    /**
+     * 替换_id主键
+     * @param $arr
+     * @return array
+     */
+    private static function setClassObjectId( $arr )
+    {
+        $arr = array_merge( [ '_id' => Coffice::getRandomID() ], $arr );
+        return $arr;
     }
 }

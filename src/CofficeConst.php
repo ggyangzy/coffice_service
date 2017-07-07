@@ -7,15 +7,73 @@ namespace yzyblog\coffice_service;
  */
 class CofficeConst
 {
+    static public $m_itake = 100;
+
     static public $arrNoAllowClass = [
                                         '_User',
                                         '_Role',
+                                        '_Relation',
                                         '_SetupTables',
                                         '_SetupTablesColumns'
                                      ];
     static public $m_str_Class_User        = '_User';
+    static public $m_str_Class_Role        = '_Role';
+    static public $m_str_Class_Relation    = '_Relation';
     static public $m_str_SetupTablesName   = '_SetupTables';
     static public $m_str_SetupTablesColumn = '_SetupTablesColumns';
+    static public $m_arr_DefaultACL        = array(
+            'ACL'       => [
+                '*' => [
+                    'read'  => true,
+                    'write' => true,
+                ]
+            ],
+            'columnACL' => [
+                '*' => [
+                    'read'  => true,
+                    'write' => true,
+                ]
+            ]
+        );
+    static public $m_arr_RoleColumnList    = array(
+        [
+            'className'     =>  '_Role',
+            'column'        =>  'name',
+            'type'          =>  'str',
+            'verify'        =>  ['required'],
+            'describe'      =>  '角色名',
+            'default'       =>  '',
+            'tag'           =>  '',
+            'sort'          =>  1,
+            'display'       =>  1
+        ]
+    );
+
+    static public $m_arr_RelationColumnList    = array(
+        [
+            'className'     =>  '_Relation',
+            'column'        =>  'userObjectId',
+            'type'          =>  'str',
+            'verify'        =>  ['required'],
+            'describe'      =>  '用户ID',
+            'default'       =>  '',
+            'tag'           =>  '',
+            'sort'          =>  1,
+            'display'       =>  1
+        ],
+        [
+            'className'     =>  '_Relation',
+            'column'        =>  'roleObjectId',
+            'type'          =>  'str',
+            'verify'        =>  ['required'],
+            'describe'      =>  '角色ID',
+            'default'       =>  '',
+            'tag'           =>  '',
+            'sort'          =>  2,
+            'display'       =>  1
+        ]
+    );
+
     static public $m_arr_UserColumnList    = array(
         [
             'className'     =>  '_User',

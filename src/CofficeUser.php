@@ -2,7 +2,6 @@
 namespace yzyblog\coffice_service;
 
 use dekuan\delib\CLib;
-use yzyblog\coffice_service\CofficeConst;
 
 Class CUser
 {
@@ -39,6 +38,12 @@ Class CUser
         $this->arrInput = app('request')->input();
     }
 
+    /**
+     * 用户注册
+     * @param $arrOutPutData
+     * @param $sErroeMsg
+     * @return int
+     */
     public function users( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
@@ -85,6 +90,12 @@ Class CUser
     }
 
 
+    /**
+     * 登陆
+     * @param $arrOutPutData
+     * @param $sErroeMsg
+     * @return int
+     */
     public function login( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
@@ -144,6 +155,12 @@ Class CUser
     }
 
 
+    /**
+     * 重置密码
+     * @param $arrOutPutData
+     * @param $sErroeMsg
+     * @return int
+     */
     public function repassword( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
@@ -192,43 +209,27 @@ Class CUser
     }
 
 
+    /**
+     * 生成 userToken
+     * @param $salt
+     * @return string
+     */
     private function getUserToken( $salt )
     {
         return md5( $salt . time() . mt_rand() );
     }
 
 
+    /**
+     * 密码加密
+     * @param $password
+     * @param $salt
+     * @return string
+     */
     private function getEncrypt( $password, $salt )
     {
         return md5( md5( $password.'-'.$salt ).$salt );
     }
-
-    function getUserInfo( $where )
-    {
-
-    }
-
-
-    // 校验登录
-    public static function checkLogin()
-    {
-        $bRtn = false;
-        if( 0 )
-        {
-            // ...校验token和userobjid正确
-//            md5( str_shuffle( uniqid( microtime() . mt_rand() ) ) . $sType ); userToken
-        }
-
-        return $bRtn;
-    }
-
-
-    public static function getUserObjectId()
-    {
-        return self::$UserObjectId;
-    }
-
-
 
     private function _Init()
     {

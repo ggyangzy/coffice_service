@@ -2,42 +2,75 @@
 
 namespace yzyblog\coffice_service;
 
-use yzyblog\coffice_service\CofficeConst;
 use dekuan\delib\CLib;
 
 Class Coffice
 {
 
+    /**
+     * 单例
+     * @var object
+     */
     protected static $g_cStaticInstance;
 
-    // 结果输出
+    /**
+     * 结果输出
+     * @var array
+     */
     protected $m_arrOutputData;
 
-    // 提交参数
+    /**
+     * 提交参数
+     * @var 输入
+     */
     protected $m_arrInputData;
 
-    // 前台允许查询字段
+    /**
+     * 前台允许查询字段
+     * @var array
+     */
     protected $m_arrSelectAllow;
 
-    // 表对象
+    /**
+     * 表对象
+     * @var object
+     */
     protected $m_oDBLink;
 
-    // 操作表名
+    /**
+     * 操作表名
+     * @var string
+     */
     protected $m_sDBTableName;
 
-    // master用户标识
+    /**
+     * master用户标识
+     * @var boolean
+     */
     protected $m_bUseMaster;
 
-    // 使用表ID
+    /**
+     * 操作表主键ID
+     * @var string
+     */
     protected $m_sUseClassID;
 
-    // 登录用户ID
+    /**
+     * 登录用户ID
+     * @var string
+     */
     protected $m_sUserObjectID;
 
-    // 用户所属角色
+    /**
+     * 用户所属角色
+     * @var array
+     */
     protected $m_arrUserRole;
 
-    // 默认分页条数
+    /**
+     * 默认分页条数
+     * @var int
+     */
     protected $m_itake;
 
 
@@ -53,7 +86,9 @@ Class Coffice
         return self::$g_cStaticInstance;
     }
 
-
+    /**
+     * Coffice constructor.
+     */
     public function __construct()
     {
         $this->_Init();
@@ -114,6 +149,12 @@ Class Coffice
         return $nRet;
     }
 
+    /**
+     * 查询单条记录
+     * @param $arrOutPutData
+     * @param $sErroeMsg
+     * @return int
+     */
     public function show( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
@@ -155,6 +196,12 @@ Class Coffice
         return $nRet;
     }
 
+    /**
+     * 添加记录
+     * @param $arrOutPutData
+     * @param $sErroeMsg
+     * @return int
+     */
     public function post( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
@@ -175,6 +222,12 @@ Class Coffice
         return $nRet;
     }
 
+    /**
+     * 修改记录
+     * @param $arrOutPutData
+     * @param $sErroeMsg
+     * @return int
+     */
     public function put( & $arrOutPutData, & $sErroeMsg  )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
@@ -196,6 +249,12 @@ Class Coffice
         return $nRet;
     }
 
+    /**
+     * 删除记录
+     * @param $arrOutPutData
+     * @param $sErroeMsg
+     * @return int
+     */
     public function delete( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
@@ -232,7 +291,10 @@ Class Coffice
     }
 
 
-
+    /**
+     * 获取主键ID
+     * @return string
+     */
     public static function getRandomID()
     {
         return substr( md5( str_shuffle( uniqid( microtime() . mt_rand() ) ) ),8,16 );
@@ -528,7 +590,10 @@ Class Coffice
     }
 
 
-
+    /**
+     * ACL权限控制
+     * @param $action
+     */
     private function _getDBACL( $action )
     {
         if( $this->m_bUseMaster )
@@ -614,7 +679,11 @@ Class Coffice
     }
 
 
-
+    /**
+     * 拼接查询条件(where)
+     * @param string $id
+     * @return mixed
+     */
     private function _getDBWhere( $id = '' )
     {
         $arrWhere = $this->_getArrDataTosKey('where');
@@ -943,17 +1012,22 @@ Class Coffice
     }
 
 
+    /**
+     * Init
+     */
     private function _Init()
     {
         // 数据过滤
         $this->m_arrInputData = app('request')->input();
 
+        $this->m_arrSelectAllow  = @$this->m_arrInputData['selectAllow'];
+
         // 获取默认分页条数
-        $this->m_itake      = 10;//!empty( Config::get('app.afcloud.take') ) ? Config::get('app.afcloud.take') : 10;
+        $this->m_itake      = CofficeConst::$m_itake;
 
-        $this->m_sDBTableName = CAuth::GetInstance()->getUseClassName();
+        $this->m_sDBTableName  = CAuth::GetInstance()->getUseClassName();
 
-        $this->m_bUseMaster   = CAuth::GetInstance()->isUseMasterKey();
+        $this->m_bUseMaster    = CAuth::GetInstance()->isUseMasterKey();
 
         $this->m_sUseClassID   = CAuth::GetInstance()->getUseClassID();
 

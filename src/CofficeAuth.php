@@ -102,6 +102,10 @@ Class CAuth{
         $this->arrInput = app('request')->input();
     }
 
+    /**
+     * 验证请求合法
+     * @return bool
+     */
     public function initialize()
     {
         $bRtn = false;
@@ -152,6 +156,7 @@ Class CAuth{
 
 
     /**
+     * 设置数据库
      * @param $dbs
      */
     public function setInfo( $dbs )
@@ -161,14 +166,9 @@ Class CAuth{
 
 
     /**
-     * Verify app ID and sign
-     *
-     * The sign must be in the format of "{md5sum},{timestamp}[,master]",
-     * which follows the format as in header "X-LC-Sign".
-     *
-     * @param string $appId App Id
-     * @param string $sign  Request sign
-     * @return bool
+     * app_sign 加密校验
+     * @param $timestamp
+     * @return string
      */
     private function verifySign( $timestamp )
     {
@@ -185,7 +185,7 @@ Class CAuth{
     }
 
     /**
-     *
+     * 设置ClassName ClassID
      */
     private function setClassInfo()
     {
@@ -208,7 +208,7 @@ Class CAuth{
     }
 
     /**
-     *
+     * 设置 userObjectId UserRole
      */
     private function setUserInfo()
     {
@@ -228,7 +228,7 @@ Class CAuth{
 
                 foreach ( $arrExist as $v )
                 {
-                    $arrRole[] = $v['name'];
+                    $arrRole[] = $v['roleObjectId'];
                 }
 
                 $this->userRole = $arrRole;
@@ -240,6 +240,7 @@ Class CAuth{
 
 
     /**
+     * ACL表权限验证
      * @param $action
      * @return bool
      */
