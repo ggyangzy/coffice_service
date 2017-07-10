@@ -91,6 +91,46 @@ Class CofficeUser
 
 
     /**
+     * 用户信息
+     * @param $arrOutPutData
+     * @param $sErroeMsg
+     * @return int
+     */
+    public function Info( $userObjectId, & $arrOutPutData, & $sErroeMsg )
+    {
+        $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+
+        if(  CLib::IsExistingString( $userObjectId )
+            && CLib::IsExistingString( $this->arrInput['userToken'] )
+            && CofficeAuth::GetInstance()->initialize()
+        )
+        {
+            $arrExist = app('db')->table('_User')->where('userToken', $this->arrInput['userToken'])->first();
+
+            if( CLib::IsArrayWithKeys( $arrExist ) && $userObjectId == $arrExist['_id'] && $arrExist['tokenInvalidAt'] < time() )
+            {
+                $nRet = CofficeConst::ERROR_SUCCESS;
+
+                $arrSetupTable = app('db')->table( CofficeConst::$m_str_SetupTablesColumn )->select('column')->where([
+                    'className' => '_User',
+                    'display'   => 0
+                ])->get();
+
+                foreach ( $arrSetupTable as $arrVal)
+                {
+                    $arrOutPutData[ $arrVal['column'] ] = $arrExist[ $arrVal['column'] ];
+                }
+
+                $this->refreshTokenInvalidAt( $userObjectId );
+            }
+        }
+
+        return $nRet;
+    }
+
+
+
+    /**
      * 登陆
      * @param $arrOutPutData
      * @param $sErroeMsg
@@ -125,19 +165,16 @@ Class CofficeUser
                     if( $arrExist['tokenInvalidAt'] > time() )
                     {
                         $arrOutPutData['userToken'] = $arrExist['userToken'];
-                        $arrData = [
-                            'tokenInvalidAt' => time() + 86400
-                        ];
                     }
                     else
                     {
                         $arrData = [
                             'userToken' => $this->getUserToken( $arrExist['salt'] ),
-                            'tokenInvalidAt' => time() + 86400
                         ];
                         $arrOutPutData['userToken'] = $arrData['userToken'];
                     }
-                    app('db')->table('_User')->where( '_id', $arrExist['_id'] )->update( $arrData );
+
+                    $this->refreshTokenInvalidAt( $arrExist['_id'], $arrData );
 
                     foreach ( $arrSetupTable as $arrVal)
                     {
@@ -217,6 +254,17 @@ Class CofficeUser
     private function getUserToken( $salt )
     {
         return md5( $salt . time() . mt_rand() );
+    }
+
+    /**
+     * 刷新userToken 失效时间
+     * @param $userObjectId
+     * @param $arrData
+     */
+    private function refreshTokenInvalidAt( $userObjectId, $arrData = array() )
+    {
+        $arrData['tokenInvalidAt'] = time() + 86400;
+        app('db')->table('_User')->where( '_id', $userObjectId )->update( $arrData );
     }
 
 
