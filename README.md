@@ -76,8 +76,65 @@ update file: bootstrap/app.php
 
 add content:
 
+
     $app->register(Jenssegers\Mongodb\MongodbServiceProvider::class);
     $app->withEloquent();
+
+
+update file: routes/web.php
+
+add content: 
+
+    <?php
+    
+    // 跨域支持
+    header( 'Access-Control-Allow-Methods: GET,PUT,POST,OPTIONS,DELETE' );
+    header( 'Access-Control-Allow-Headers:Origin, X-Requested-With, Content-Type, Accept, content-type' );
+    header( 'Access-Control-Allow-Origin: *' );
+    
+    
+    $app->group(['prefix' => 'coffice'], function () use ($app) {
+    
+        $app->get('init',       'CofficeController@init');
+        $app->get('init/{dbs}', 'CofficeController@init');
+    });
+    
+    
+    $app->group( [ 'prefix' => 'class/user' ], function () use ($app) {
+    
+        // post
+        $app -> post   ( '/',           'CofficeController@User'     );
+    
+        // login
+        $app -> get    ( '/',           'CofficeController@Login'     );
+    
+        // get userInfo
+        $app -> get    ( '{objectId}',  'CofficeController@Info'     );
+    
+        // update
+        $app -> put    ( '{objectId}',  'CofficeController@RePassword'    );
+    
+    });
+    
+    
+    $app->group( [ 'prefix' => 'class/{class}' ], function () use ($app) {
+    
+        // get all
+        $app -> get    ( '/',           'CofficeController@Find'     );
+    
+        // get once
+        $app -> get    ( '{objectId}',  'CofficeController@Show'      );
+    
+        // post
+        $app -> post   ( '/',           'CofficeController@Store'     );
+    
+        // update
+        $app -> put    ( '{objectId}',  'CofficeController@Update'    );
+    
+        // del
+        $app -> delete ( '{objectId}',  'CofficeController@Destroy'   );
+    
+    });
 
 create file: app/Http/Controllers/CofficeController.php
 
@@ -226,6 +283,24 @@ add content:
             $CUser = CofficeUser::GetInstance();
     
             $nCall = $CUser->users($arrOutPutData, $sErroeMsg);
+    
+            return Helper::getVDataResponse($nCall, $sErroeMsg, $arrOutPutData, $this->m_sServiceVersion);
+        }
+
+
+
+        /**
+         * 用户信息
+         */
+        public function Info( $userObjectId )
+        {
+            $arrOutPutData = [];
+    
+            $sErroeMsg = "";
+    
+            $CUser = CofficeUser::GetInstance();
+    
+            $nCall = $CUser->Info( $userObjectId, $arrOutPutData, $sErroeMsg);
     
             return Helper::getVDataResponse($nCall, $sErroeMsg, $arrOutPutData, $this->m_sServiceVersion);
         }

@@ -133,7 +133,7 @@ Class CofficeAuth{
                 $arrAuth = $this->verifySign( $list[1] );
 
                 // 判断时区 Todo
-                $list[1] = time();
+                // $list[1] = time();
 
                 if( $arrAuth == $this->arrInput['app_sign'] && ( $list[1] + 5 ) > time() )
                 {
