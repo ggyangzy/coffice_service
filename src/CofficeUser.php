@@ -155,7 +155,7 @@ Class CofficeUser
                 if( $arrExist['password'] == $password )
                 {
                     $nRet = CofficeConst::ERROR_SUCCESS;
-                    $setupACL = array();
+                    $arrData = array();
                     $arrOutPutData['user_id']   = $arrExist['_id'];
                     $arrSetupTable = app('db')->table( CofficeConst::$m_str_SetupTablesColumn )->select('column')->where([
                         'className' => '_User',
