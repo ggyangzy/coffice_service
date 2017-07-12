@@ -162,6 +162,11 @@ Class CofficeUser
                         'display'   => 0
                     ])->get();
 
+                    foreach ( $arrSetupTable as $arrVal)
+                    {
+                        $arrOutPutData[ $arrVal['column'] ] = $arrExist[ $arrVal['column'] ];
+                    }
+
                     if( $arrExist['tokenInvalidAt'] > time() )
                     {
                         $arrOutPutData['userToken'] = $arrExist['userToken'];
@@ -175,11 +180,6 @@ Class CofficeUser
                     }
 
                     $this->refreshTokenInvalidAt( $arrExist['_id'], $arrData );
-
-                    foreach ( $arrSetupTable as $arrVal)
-                    {
-                        $arrOutPutData[ $arrVal['column'] ] = $arrExist[ $arrVal['column'] ];
-                    }
                 }
                 else
                 {
