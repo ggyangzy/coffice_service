@@ -101,13 +101,14 @@ Class CofficeUser
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
 
         if(  CLib::IsExistingString( $userObjectId )
+            && CLib::IsArrayWithKeys ( $this->arrInput, ['userToken'] )
             && CLib::IsExistingString( $this->arrInput['userToken'] )
             && CofficeAuth::GetInstance()->initialize()
         )
         {
             $arrExist = app('db')->table('_User')->where('userToken', $this->arrInput['userToken'])->first();
 
-            if( CLib::IsArrayWithKeys( $arrExist ) && $userObjectId == $arrExist['_id'] && $arrExist['tokenInvalidAt'] < time() )
+            if( CLib::IsArrayWithKeys( $arrExist ) && $userObjectId == $arrExist['_id'] && $arrExist['tokenInvalidAt'] > time() )
             {
                 $nRet = CofficeConst::ERROR_SUCCESS;
 
@@ -116,6 +117,7 @@ Class CofficeUser
                     'display'   => 0
                 ])->get();
 
+                $arrOutPutData['user_id'] = $arrExist['_id'];
                 foreach ( $arrSetupTable as $arrVal)
                 {
                     $arrOutPutData[ $arrVal['column'] ] = $arrExist[ $arrVal['column'] ];
@@ -208,6 +210,7 @@ Class CofficeUser
         )
         {
             $where = [];
+
             $arrExist = app('db')->table('_User')->where('_id', $this->userObjectId)->first();
 
             if( CLib::IsArrayWithKeys( $arrExist ) )

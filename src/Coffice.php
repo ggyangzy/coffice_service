@@ -769,8 +769,8 @@ Class Coffice
 
     /**
      * 拼查询条件返回数据(other)
-     * @param string $id
-     * @return array
+     * @param array $result
+     * @return object
      */
     private function _getDBOtherData( & $result = [] )
     {
@@ -1024,6 +1024,8 @@ Class Coffice
 
         // 获取默认分页条数
         $this->m_itake      = CofficeConst::$m_itake;
+
+        CofficeAuth::GetInstance()->initialize();
 
         $this->m_sDBTableName  = CofficeAuth::GetInstance()->getUseClassName();
 
