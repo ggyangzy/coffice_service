@@ -1044,8 +1044,6 @@ Class Coffice
         // 获取默认分页条数
         $this->m_itake      = CofficeConst::$m_itake;
 
-        CofficeAuth::GetInstance()->initialize();
-
         $this->m_sDBTableName  = CofficeAuth::GetInstance()->getUseClassName();
 
         $this->m_bUseMaster    = CofficeAuth::GetInstance()->isUseMasterKey();

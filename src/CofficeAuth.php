@@ -100,6 +100,7 @@ Class CofficeAuth{
     public function __construct()
     {
         $this->arrInput = app('request')->input();
+        $this->initialize();
     }
 
     /**
