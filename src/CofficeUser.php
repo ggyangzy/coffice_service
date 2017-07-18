@@ -46,13 +46,21 @@ Class CofficeUser
      */
     public function users( & $arrOutPutData, & $sErroeMsg )
     {
-        $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if(  CLib::IsArrayWithKeys ( $this->arrInput, ['username', 'password'] )
-          && CLib::IsExistingString( $this->arrInput['username'] )
-          && CLib::IsExistingString( $this->arrInput['password'] )
-          && CofficeAuth::GetInstance()->initialize()
+        if( ! CofficeAuth::GetInstance()->initialize() )
+        {
+            $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+            $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
+        }
+        elseif( ! CLib::IsArrayWithKeys ( $this->arrInput, ['username', 'password'] )
+            || ! CLib::IsExistingString( $this->arrInput['username'] )
+            || ! CLib::IsExistingString( $this->arrInput['password'] )
         )
+        {
+            $nRet = CofficeConst::ERROR_PARAMETER_ERROR;
+            $sErroeMsg = CofficeConst::ZH_ERROR_PARAMETER_ERROR;
+        }
+        else
         {
             $nExist = app('db')->table('_User')->where('username', $this->arrInput['username'])->count();
 
@@ -75,13 +83,20 @@ Class CofficeUser
                 if( app('db')->table('_User')->insert($arrUserInfo) )
                 {
                     $nRet = CofficeConst::ERROR_SUCCESS;
+                    $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
                     $arrOutPutData['userToken'] = $arrUserInfo['userToken'];
                     $arrOutPutData['user_id'] = $arrUserInfo['_id'];
+                }
+                else
+                {
+                    $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
+                    $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
                 }
             }
             else
             {
-                $sErroeMsg = '用户名已存在';
+                $nRet = CofficeConst::ERROR_USER_EXIST_ERROR;
+                $sErroeMsg = CofficeConst::ZH_ERROR_USER_EXIST_ERROR;
             }
 
         }
@@ -98,20 +113,27 @@ Class CofficeUser
      */
     public function Info( $userObjectId, & $arrOutPutData, & $sErroeMsg )
     {
-        $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
-
-        if(  CLib::IsExistingString( $userObjectId )
-            && CLib::IsArrayWithKeys ( $this->arrInput, ['userToken'] )
-            && CLib::IsExistingString( $this->arrInput['userToken'] )
-            && CofficeAuth::GetInstance()->initialize()
+        if( ! CofficeAuth::GetInstance()->initialize() )
+        {
+            $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+            $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
+        }
+        elseif( ! CLib::IsExistingString( $userObjectId )
+            || ! CLib::IsArrayWithKeys ( $this->arrInput, ['userToken'] )
+            || ! CLib::IsExistingString( $this->arrInput['userToken'] )
         )
         {
+            $nRet = CofficeConst::ERROR_PARAMETER_ERROR;
+            $sErroeMsg = CofficeConst::ZH_ERROR_PARAMETER_ERROR;
+        }
+        else
+        {
+            $nRet = CofficeConst::ERROR_SUCCESS;
+            $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
             $arrExist = app('db')->table('_User')->where('userToken', $this->arrInput['userToken'])->first();
 
             if( CLib::IsArrayWithKeys( $arrExist ) && $userObjectId == $arrExist['_id'] && $arrExist['tokenInvalidAt'] > time() )
             {
-                $nRet = CofficeConst::ERROR_SUCCESS;
-
                 $arrSetupTable = app('db')->table( CofficeConst::$m_str_SetupTablesColumn )->select('column')->where([
                     'className' => '_User',
                     'display'   => 0
@@ -140,14 +162,23 @@ Class CofficeUser
      */
     public function login( & $arrOutPutData, & $sErroeMsg )
     {
-        $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
-
-        if(  CLib::IsArrayWithKeys ( $this->arrInput, ['username', 'password'] )
-            && CLib::IsExistingString( $this->arrInput['username'] )
-            && CLib::IsExistingString( $this->arrInput['password'] )
-            && CofficeAuth::GetInstance()->initialize()
+        if( ! CofficeAuth::GetInstance()->initialize() )
+        {
+            $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+            $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
+        }
+        elseif ( ! CLib::IsArrayWithKeys ( $this->arrInput, ['username', 'password'] )
+            || ! CLib::IsExistingString( $this->arrInput['username'] )
+            || ! CLib::IsExistingString( $this->arrInput['password'] )
         )
         {
+            $nRet = CofficeConst::ERROR_PARAMETER_ERROR;
+            $sErroeMsg = CofficeConst::ZH_ERROR_PARAMETER_ERROR;
+        }
+        else
+        {
+            $nRet = CofficeConst::ERROR_USER_LOGIN_ERROR;
+            $sErroeMsg = CofficeConst::ZH_ERROR_USER_LOGIN_ERROR;
             $arrExist = app('db')->table('_User')->where('username', $this->arrInput['username'])->first();
 
             if( CLib::IsArrayWithKeys( $arrExist ) )
@@ -157,6 +188,7 @@ Class CofficeUser
                 if( $arrExist['password'] == $password )
                 {
                     $nRet = CofficeConst::ERROR_SUCCESS;
+                    $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
                     $arrData = array();
                     $arrOutPutData['user_id']   = $arrExist['_id'];
                     $arrSetupTable = app('db')->table( CofficeConst::$m_str_SetupTablesColumn )->select('column')->where([
@@ -183,13 +215,8 @@ Class CofficeUser
 
                     $this->refreshTokenInvalidAt( $arrExist['_id'], $arrData );
                 }
-                else
-                {
-                    $sErroeMsg = '用户名或密码错误';
-                }
             }
         }
-
         return $nRet;
     }
 
@@ -202,14 +229,23 @@ Class CofficeUser
      */
     public function repassword( & $arrOutPutData, & $sErroeMsg )
     {
-        $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
-
-        if(  CLib::IsArrayWithKeys ( $this->arrInput, ['password'] )
-          && CLib::IsExistingString( $this->arrInput['password'] )
-          && CofficeAuth::GetInstance()->initialize()
+        if( ! CofficeAuth::GetInstance()->initialize() )
+        {
+            $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+            $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
+        }
+        elseif( ! CLib::IsArrayWithKeys ( $this->arrInput, ['password'] )
+          || ! CLib::IsExistingString( $this->arrInput['password'] )
         )
         {
+            $nRet = CofficeConst::ERROR_PARAMETER_ERROR;
+            $sErroeMsg = CofficeConst::ZH_ERROR_PARAMETER_ERROR;
+        }
+        else
+        {
             $where = [];
+            $nRet = CofficeConst::ERROR_PARAMETER_ERROR;
+            $sErroeMsg = CofficeConst::ZH_ERROR_PARAMETER_ERROR;
 
             $arrExist = app('db')->table('_User')->where('_id', $this->userObjectId)->first();
 
@@ -232,16 +268,14 @@ Class CofficeUser
                 if( app('db')->table('_User')->where( $where )->update( $arrData ) )
                 {
                     $nRet = CofficeConst::ERROR_SUCCESS;
+                    $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
                     $arrOutPutData['userToken'] = $arrData['userToken'];
                 }
                 else
                 {
-                    $sErroeMsg = '修改失败';
+                    $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
+                    $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
                 }
-            }
-            else
-            {
-                $sErroeMsg = '请先登录';
             }
         }
 

@@ -104,15 +104,20 @@ Class Coffice
     public function find( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+        $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
         if( CofficeAuth::GetInstance()->initialize() )
         {
             $result = array();
-            $nRet = CofficeConst::ERROR_SUCCESS;
             $arrResultColumn = $this->_getTablesColumn(true);
+            $nRet = CofficeConst::ERROR_ACCESS_NO_DATA;
+            $sErroeMsg = CofficeConst::ZH_ERROR_NO_DATA;
 
             if( CLib::IsArrayWithKeys( $arrResultColumn ) )
             {
+                $nRet = CofficeConst::ERROR_SUCCESS;
+                $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
+
                 if( $this->m_bUseMaster )
                 {
                     $arrResultColumn[] = 'ACL';
@@ -158,12 +163,11 @@ Class Coffice
     public function show( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+        $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
         if( CofficeAuth::GetInstance()->initialize() )
         {
             $result = array();
-
-            $nRet = CofficeConst::ERROR_SUCCESS;
 
             $this->_getDBACL( 'read' );
 
@@ -173,8 +177,14 @@ Class Coffice
 
             $arrResultColumn = $this->_getTablesColumn(true);
 
+            $nRet = CofficeConst::ERROR_ACCESS_NO_DATA;
+            $sErroeMsg = CofficeConst::ZH_ERROR_NO_DATA;
+
             if( CLib::IsArrayWithKeys( $arrResultColumn ) )
             {
+                $nRet = CofficeConst::ERROR_SUCCESS;
+                $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
+
                 if( $this->m_bUseMaster )
                 {
                     $arrResultColumn[] = 'ACL';
@@ -205,16 +215,19 @@ Class Coffice
     public function post( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+        $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
         if( CofficeAuth::GetInstance()->initialize() )
         {
             if( $this->_SaveData( $arrOutPutData, $sErroeMsg ) )
             {
                 $nRet = CofficeConst::ERROR_SUCCESS;
+                $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
             }
             else
             {
                 $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
+                $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
             }
 
         }
@@ -231,6 +244,7 @@ Class Coffice
     public function put( & $arrOutPutData, & $sErroeMsg  )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+        $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
         if( CofficeAuth::GetInstance()->initialize() )
         {
@@ -239,10 +253,12 @@ Class Coffice
             if( $this->_SaveData( $arrOutPutData, $sErroeMsg, $this->m_sUseClassID ) )
             {
                 $nRet = CofficeConst::ERROR_SUCCESS;
+                $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
             }
             else
             {
                 $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
+                $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
             }
         }
 
@@ -258,6 +274,7 @@ Class Coffice
     public function delete( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+        $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
         if( CofficeAuth::GetInstance()->initialize() )
         {
@@ -280,10 +297,12 @@ Class Coffice
             if( $bStatus )
             {
                 $nRet = CofficeConst::ERROR_SUCCESS;
+                $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
             }
             else
             {
-                $sErroeMsg = '操作失败';
+                $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
+                $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
             }
         }
 
@@ -769,8 +788,8 @@ Class Coffice
 
     /**
      * 拼查询条件返回数据(other)
-     * @param array $result
-     * @return object
+     * @param string $id
+     * @return \
      */
     private function _getDBOtherData( & $result = [] )
     {

@@ -12,7 +12,8 @@ class CofficeInit
      */
     public static function initAppList( $dbs = 'coffice_manager', & $arrOutPutData, & $sErroeMsg )
     {
-        $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
+        $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
+        $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
 
         $nCall = false;
 
@@ -62,16 +63,13 @@ class CofficeInit
             app('db')->table( CofficeConst::$m_str_SetupTablesColumn )->insert( $arrDefaultTablesColumnList );
 
             $nRet = CofficeConst::ERROR_SUCCESS;
+            $sErroeMsg = CofficeConst::ZH_ERROR_SUCCESS;
             $arrOutPutData = [
                 'dbs'       => $arrInit['dbs'],
                 'app_id'    => $arrInit['_id'],
                 'app_key'   => $arrInit['app_key'],
                 'master_key'=> $arrInit['master_key'],
             ];
-        }
-        else
-        {
-            $sErroeMsg = '操作失败';
         }
 
         return $nRet;

@@ -215,8 +215,21 @@ class CofficeConst
     //	common error codes
     //
     const ERROR_SUCCESS			            = 0;            //      successfully
-    const ERROR_ACCESS_CLASS_NO_ALLOW		= -100001;      //      access class no exist
-    const ERROR_ACCESS_EXEC_ERROR		    = -100010;      //      access exec error
+    const ERROR_ACCESS_CLASS_NO_ALLOW		= 100001;      //      access class no exist
+    const ERROR_ACCESS_NO_DATA		        = 100005;      //      access exec error
+    const ERROR_ACCESS_EXEC_ERROR		    = 100010;      //      access exec error
+    const ERROR_PARAMETER_ERROR 		    = 100015;      //      access exec error
+    const ERROR_USER_EXIST_ERROR 		    = 100020;      //      access exec error
+    const ERROR_USER_LOGIN_ERROR 		    = 100025;      //      access exec error
+
+
+    const ZH_ERROR_SUCCESS	                = '';      //      access class no exist
+    const ZH_ERROR_ACCESS_CLASS_NO_ALLOW	= '无权限操作';      //      access class no exist
+    const ZH_ERROR_NO_DATA	                = '无可操作数据';      //      access class no exist
+    const ZH_ERROR_ACCESS_EXEC_ERROR		= '操作失败';      //      access class no exist
+    const ZH_ERROR_PARAMETER_ERROR 		    = '参数错误';      //      access exec error
+    const ZH_ERROR_USER_EXIST_ERROR 		= '用户名已存在';      //      access exec error
+    const ZH_ERROR_USER_LOGIN_ERROR 		= '用户名或密码错误';      //      access exec error
 
 //            app('db')->enableQueryLog();
 //            print_r(app('db')->getQueryLog());die;
