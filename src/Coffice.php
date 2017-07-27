@@ -278,22 +278,12 @@ Class Coffice
 
         if( CofficeAuth::GetInstance()->initialize() )
         {
-            $arrId = explode( '.', $this->m_sUseClassID );
-
             $this->_getDBACL( 'delete' );
 
             $this->_getDBWhere();
 
-            if( ! empty( $arrId[1] ) )
-            {
-                $bStatus = $this->m_oDBLink->where( $arrId[0] , $this->_GetVarType( $arrId[0], $arrId[1] ) )
-                    ->delete();
-            }
-            else
-            {
-                $bStatus = $this->m_oDBLink->where( '_id' , $arrId[0] )
-                    ->delete();
-            }
+            $bStatus = $this->m_oDBLink->where( '_id' , $this->m_sUseClassID )->delete();
+
             if( $bStatus )
             {
                 $nRet = CofficeConst::ERROR_SUCCESS;
@@ -348,20 +338,9 @@ Class Coffice
 
             if( '' != $id )
             {
-                $arrId = explode('.', $id);
-
                 $arrTablesData['updateAt'] = time();
 
-                if( ! empty( $arrId[1] ) )
-                {
-                    $nRet = $this->m_oDBLink->where( $arrId[0] , $this->_GetVarType( $arrId[0], $arrId[1] ) )
-                        ->update( $arrTablesData );
-                }
-                else
-                {
-                    $nRet = $this->m_oDBLink->where( '_id' , $arrId[0] )
-                        ->update( $arrTablesData );
-                }
+                $nRet = $this->m_oDBLink->where( '_id' , $id )->update( $arrTablesData );
             }
             else
             {
@@ -487,16 +466,7 @@ Class Coffice
 
                             if( '' != $id )
                             {
-                                $arrId = explode('.', $id);
-
-                                if( ! empty( $arrId[1] ) )
-                                {
-                                    $arrDataRule[$sSKey][$sKey] .= ",$arrId[1],$arrId[0]";
-                                }
-                                else
-                                {
-                                    $arrDataRule[$sSKey][$sKey] .= ",$arrId[0],_id";
-                                }
+                                $arrDataRule[$sSKey][$sKey] .= ",$id,_id";
                             }
                         }
                         else
@@ -509,16 +479,7 @@ Class Coffice
 
                                 if( '' != $id )
                                 {
-                                    $arrId = explode('.', $id);
-
-                                    if( ! empty( $arrId[1] ) )
-                                    {
-                                        $objQuery->where($arrId[0], '!=', $arrId[1]);
-                                    }
-                                    else
-                                    {
-                                        $objQuery->where('_id', '!=', $arrId[0]);
-                                    }
+                                    $objQuery->where('_id', '!=', $id);
                                 }
 
                                 if($objQuery->count() > 0)
@@ -769,16 +730,7 @@ Class Coffice
 
         if( CLib::IsExistingString( $id ) )
         {
-            $arrId = explode('.', $id);
-
-            if( ! empty( $arrId[1] ) )
-            {
-                $this->m_oDBLink->where( $arrId[0] , $this->_getVarType( $arrId[0], $arrId[1] ) );
-            }
-            else
-            {
-                $this->m_oDBLink->where( '_id' , $arrId[0] );
-            }
+            $this->m_oDBLink->where( '_id' , $id );
         }
 
         return $this->m_oDBLink;
