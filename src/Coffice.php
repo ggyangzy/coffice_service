@@ -215,7 +215,6 @@ Class Coffice
     public function post( & $arrOutPutData, & $sErroeMsg )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
-        $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
         if( CofficeAuth::GetInstance()->initialize() )
         {
@@ -229,7 +228,10 @@ Class Coffice
                 $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
                 $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
             }
-
+        }
+        else
+        {
+            $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
         }
 
         return $nRet;
@@ -244,7 +246,6 @@ Class Coffice
     public function put( & $arrOutPutData, & $sErroeMsg  )
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
-        $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
         if( CofficeAuth::GetInstance()->initialize() )
         {
@@ -260,6 +261,10 @@ Class Coffice
                 $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
                 $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
             }
+        }
+        else
+        {
+            $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
         }
 
         return $nRet;
@@ -385,7 +390,7 @@ Class Coffice
                 // 验证规则
                 $arrDataRule    = CofficeConst::$m_arr_SetupTablesColumnListRule;
                 // 字段描述
-                 $arrDataDesc   = CofficeConst::$m_arr_SetupTablesColumnListDesc;
+                $arrDataDesc   = CofficeConst::$m_arr_SetupTablesColumnListDesc;
                 // 字段类型
                 $arrDataType    = CofficeConst::$m_arr_SetupTablesColumnListType;
                 // 默认值
@@ -405,7 +410,7 @@ Class Coffice
                 // 验证规则
                 $arrDataRule    = CofficeConst::$m_arr_SetupTablesRule;
                 // 字段描述
-                 $arrDataDesc   = CofficeConst::$m_arr_SetupTablesDesc;
+                $arrDataDesc   = CofficeConst::$m_arr_SetupTablesDesc;
                 // 字段类型
                 $arrDataType    = CofficeConst::$m_arr_SetupTablesType;
                 // 默认值
