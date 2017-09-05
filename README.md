@@ -11,7 +11,7 @@ copy /vendor/laravel/lumen-framework/config to /config
 
 update file: /config/database.php
 
-add content:
+add content in connections:
 
     'mongodb_coffice' => [
         'driver'   => 'mongodb',
@@ -31,7 +31,7 @@ add content:
         'database' => env('DB_ACCOUNT',''),
     ]
 
-create file :Http/Libs/Helper.php
+create file :app/Http/Libs/Helper.php
 
 add content:
 
