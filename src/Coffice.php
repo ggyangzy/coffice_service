@@ -91,7 +91,7 @@ Class Coffice
      */
     public function __construct()
     {
-        $this->_Init();
+//        $this->_Init();
     }
 
 
@@ -106,7 +106,7 @@ Class Coffice
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
         $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CofficeAuth::GetInstance()->initialize() )
+        if( $this->_Init() )
         {
             $result = array();
             $arrResultColumn = $this->_getTablesColumn(true);
@@ -165,7 +165,7 @@ Class Coffice
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
         $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CofficeAuth::GetInstance()->initialize() )
+        if( $this->_Init() )
         {
             $result = array();
 
@@ -216,7 +216,7 @@ Class Coffice
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CofficeAuth::GetInstance()->initialize() )
+        if( $this->_Init() )
         {
             if( $this->_SaveData( $arrOutPutData, $sErroeMsg ) )
             {
@@ -247,7 +247,7 @@ Class Coffice
     {
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CofficeAuth::GetInstance()->initialize() )
+        if( $this->_Init() )
         {
             $this->_getDBACL( 'write' );
 
@@ -281,7 +281,7 @@ Class Coffice
         $nRet = CofficeConst::ERROR_ACCESS_CLASS_NO_ALLOW;
         $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_CLASS_NO_ALLOW;
 
-        if( CofficeAuth::GetInstance()->initialize() )
+        if( $this->_Init() )
         {
             $this->_getDBACL( 'delete' );
 
@@ -993,25 +993,34 @@ Class Coffice
      */
     private function _Init()
     {
-        // 数据过滤
-        $this->m_arrInputData = app('request')->input();
+        $Rtn = false;
 
-        $this->m_arrSelectAllow  = @$this->m_arrInputData['selectAllow'];
+        if( CofficeAuth::GetInstance()->initialize() )
+        {
+            // 数据过滤
+            $this->m_arrInputData = app('request')->input();
 
-        // 获取默认分页条数
-        $this->m_itake      = CofficeConst::$m_itake;
+            $this->m_arrSelectAllow  = @$this->m_arrInputData['selectAllow'];
 
-        $this->m_sDBTableName  = CofficeAuth::GetInstance()->getUseClassName();
+            // 获取默认分页条数
+            $this->m_itake      = CofficeConst::$m_itake;
 
-        $this->m_bUseMaster    = CofficeAuth::GetInstance()->isUseMasterKey();
+            $this->m_sDBTableName  = CofficeAuth::GetInstance()->getUseClassName();
 
-        $this->m_sUseClassID   = CofficeAuth::GetInstance()->getUseClassID();
+            $this->m_bUseMaster    = CofficeAuth::GetInstance()->isUseMasterKey();
 
-        $this->m_sUserObjectID = CofficeAuth::GetInstance()->getUserObjectID();
+            $this->m_sUseClassID   = CofficeAuth::GetInstance()->getUseClassID();
 
-        $this->m_arrUserRole   = CofficeAuth::GetInstance()->getUserRole();
+            $this->m_sUserObjectID = CofficeAuth::GetInstance()->getUserObjectID();
 
-        $this->m_oDBLink       = app('db')->table( $this->m_sDBTableName );
+            $this->m_arrUserRole   = CofficeAuth::GetInstance()->getUserRole();
+
+            $this->m_oDBLink       = app('db')->table( $this->m_sDBTableName );
+
+            $Rtn = true;
+        }
+
+        return $Rtn;
     }
 
 
