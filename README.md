@@ -63,7 +63,7 @@ add content:
     
             return CResponse::GetInstance()->GetVDataResponse( $nErrorId,
                 $sErrorDesc,
-                ['info' => $arrVData],
+                $arrVData,
                 $sVersion,
                 $bCached,
                 $arrExtra );
