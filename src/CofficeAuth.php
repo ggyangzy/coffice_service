@@ -266,7 +266,7 @@ Class CofficeAuth{
 
                 $arrExist = app('db')->table('_SetupTables')->where( 'className', $this->useClassName )->where(function($query) use ($arrOperat)
                 {
-                    $query->where( 'ACL.*.'.$arrOperat[$this->requestType], true );
+                    $query->where( 'ACL.*.'.$arrOperat[$this->requestType], 'true' );
 
                     if( CLib::IsArrayWithKeys( $this->userRole ) )
                     {

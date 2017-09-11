@@ -90,7 +90,16 @@ add content:
     // 跨域支持
     header( 'Access-Control-Allow-Methods: GET,PUT,POST,OPTIONS,DELETE' );
     header( 'Access-Control-Allow-Headers:Origin, X-Requested-With, Content-Type, Accept, content-type' );
-    header( 'Access-Control-Allow-Origin: *' );
+    //header( 'Access-Control-Allow-Credentials: true');  接收cookie
+
+    $arrDomain = explode( ',', env( 'ACCESS_DOMAIN', '' ));
+    $domain = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
+    if ( ! in_array( $domain, $arrDomain ) )
+    {
+        $domain = '';
+    }
+    header( 'Access-Control-Allow-Origin: '.$domain );
+    
     
     
     $app->group(['prefix' => 'coffice'], function () use ($app) {
@@ -361,6 +370,7 @@ update .env content:
     CACHE_DRIVER=memcached
     QUEUE_DRIVER=sync
     APP_LOCALE=cn
+    ACCESS_DOMAIN=www.xxx.com,www.ccc.com #允许的域名
     
 create file resources/lang/cn/validation.php
 
