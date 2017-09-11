@@ -272,13 +272,13 @@ Class CofficeAuth{
                     {
                         foreach( $this->userRole as $v )
                         {
-                            $query->orWhere( 'ACL.role:'.$v.'.'.$arrOperat[$this->requestType] , true );
+                            $query->orWhere( 'ACL.role:'.$v.'.'.$arrOperat[$this->requestType] , 'true' );
                         }
                     }
 
                     if( CLib::IsExistingString( $this->userObjectId ) )
                     {
-                        $query->orWhere( 'ACL.user:'.$this->userObjectId.'.'.$arrOperat[$this->requestType], true );
+                        $query->orWhere( 'ACL.user:'.$this->userObjectId.'.'.$arrOperat[$this->requestType], 'true' );
                     }
                 });
 

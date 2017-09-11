@@ -23,8 +23,8 @@ class CofficeInit
             'master_key' => Coffice::getRandomID().Coffice::getRandomID(),
             'ACL'        => [
                 '*' => [
-                    'read'  => true,
-                    'write' => true
+                    'read'  => 'true',
+                    'write' => 'true'
                 ]
             ]
         ];

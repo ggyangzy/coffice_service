@@ -24,14 +24,14 @@ class CofficeConst
     static public $m_arr_DefaultACL        = array(
             'ACL'       => [
                 '*' => [
-                    'read'  => true,
-                    'write' => true,
+                    'read'  => 'true',
+                    'write' => 'true',
                 ]
             ],
             'columnACL' => [
                 '*' => [
-                    'read'  => true,
-                    'write' => true,
+                    'read'  => 'true',
+                    'write' => 'true',
                 ]
             ]
         );

@@ -588,19 +588,19 @@ Class Coffice
 
         $this->m_oDBLink->where(function($query) use ($action)
         {
-            $query->where( 'ACL.*.'.$action, true );
+            $query->where( 'ACL.*.'.$action, 'true' );
 
             if( CLib::IsArrayWithKeys( $this->m_arrUserRole ) )
             {
                 foreach( $this->m_arrUserRole as $v )
                 {
-                    $query->orWhere( 'ACL.role:'.$v.'.'.$action , true );
+                    $query->orWhere( 'ACL.role:'.$v.'.'.$action , 'true' );
                 }
             }
 
             if( CLib::IsExistingString( $this->m_sUserObjectID ) )
             {
-                $query->orWhere( 'ACL.user:'.$this->m_sUserObjectID.'.'.$action, true );
+                $query->orWhere( 'ACL.user:'.$this->m_sUserObjectID.'.'.$action, 'true' );
             }
         });
 
