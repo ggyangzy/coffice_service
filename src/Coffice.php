@@ -951,19 +951,19 @@ Class Coffice
         else
         {
             $result = app('db')->table( CofficeConst::$m_str_SetupTablesName )
-                ->where('_Table',$this->m_sDBTableName)
-                ->where('_Column', $Column)
+                ->where('className',$this->m_sDBTableName)
+                ->where('column', $Column)
                 ->first();
         }
 
         if( !empty( $result ) )
         {
             // 类型验证
-            if( in_array( $result[ '_Type' ] ,CofficeConst::$m_arr_StrData ) )
+            if( in_array( $result[ 'type' ] ,CofficeConst::$m_arr_StrData ) )
             {
                 $RVal = strval( $var );
             }
-            elseif( in_array( $result[ '_Type' ] ,CofficeConst::$m_arr_IntData ) )
+            elseif( in_array( $result[ 'type' ] ,CofficeConst::$m_arr_IntData ) )
             {
                 $RVal = intval( $var );
             }
