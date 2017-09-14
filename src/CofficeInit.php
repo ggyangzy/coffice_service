@@ -31,27 +31,27 @@ class CofficeInit
 
         if( CofficeAuth::GetInstance()->initialize() )
         {
-            if ( ! app('db')->connection('mongodb_coffice')->table('app_list')->where('dbs',$dbs)->first() )
+            if ( ! app('db')->connection('mongodb_coffice')->table('_AppList')->where('dbs',$dbs)->first() )
             {
                 $arrInit['dbs'] = $dbs;
-                $nCall = app('db')->connection('mongodb_coffice')->table('app_list')->insert( $arrInit );
+                $nCall = app('db')->connection('mongodb_coffice')->table('_AppList')->insert( $arrInit );
             }
         }
         else
         {
-            if ( ! app('db')->connection('mongodb_coffice')->table('app_list')->first() )
+            if ( ! app('db')->connection('mongodb_coffice')->table('_AppList')->first() )
             {
                 $arrInit['dbs'] = 'coffice_manager';
-                $nCall = app('db')->connection('mongodb_coffice')->table('app_list')->insert( $arrInit );
+                $nCall = app('db')->connection('mongodb_coffice')->table('_AppList')->insert( $arrInit );
             }
         }
 
         if( $nCall )
         {
             $arrDefaultTables   = array();
-            $arrDefaultTables[] = array_merge( [ '_id' => Coffice::getRandomID(), 'className' => CofficeConst::$m_str_Class_User ], CofficeConst::$m_arr_DefaultACL );
-            $arrDefaultTables[] = array_merge( [ '_id' => Coffice::getRandomID(), 'className' => CofficeConst::$m_str_Class_Role ], CofficeConst::$m_arr_DefaultACL );
-            $arrDefaultTables[] = array_merge( [ '_id' => Coffice::getRandomID(), 'className' => CofficeConst::$m_str_Class_Relation ], CofficeConst::$m_arr_DefaultACL );
+            $arrDefaultTables[] = array_merge( [ '_id' => Coffice::getRandomID(), 'className' => CofficeConst::$m_str_Class_User ], [ 'describe' => '用户' ], CofficeConst::$m_arr_DefaultACL );
+            $arrDefaultTables[] = array_merge( [ '_id' => Coffice::getRandomID(), 'className' => CofficeConst::$m_str_Class_Role ], [ 'describe' => '角色' ], CofficeConst::$m_arr_DefaultACL );
+            $arrDefaultTables[] = array_merge( [ '_id' => Coffice::getRandomID(), 'className' => CofficeConst::$m_str_Class_Relation ], [ 'describe' => '用户关联角色' ], CofficeConst::$m_arr_DefaultACL );
 
             $arrUserColumnList = array_map( array( __CLASS__, "setClassObjectId"), CofficeConst::$m_arr_UserColumnList );
             $arrRoleColumnList = array_map( array( __CLASS__, "setClassObjectId"), CofficeConst::$m_arr_RoleColumnList );

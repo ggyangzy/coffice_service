@@ -45,6 +45,7 @@ class CofficeConst
             'default'       =>  '',
             'tag'           =>  '',
             'sort'          =>  1,
+            'list'          =>  1,
             'display'       =>  1
         ]
     );
@@ -59,6 +60,7 @@ class CofficeConst
             'default'       =>  '',
             'tag'           =>  '',
             'sort'          =>  1,
+            'list'          =>  1,
             'display'       =>  1
         ],
         [
@@ -70,6 +72,7 @@ class CofficeConst
             'default'       =>  '',
             'tag'           =>  '',
             'sort'          =>  2,
+            'list'          =>  1,
             'display'       =>  1
         ]
     );
@@ -84,6 +87,7 @@ class CofficeConst
             'default'       =>  '',
             'tag'           =>  '',
             'sort'          =>  1,
+            'list'          =>  0,
             'display'       =>  0
         ],
         [
@@ -95,6 +99,7 @@ class CofficeConst
             'default'       =>  '',
             'tag'           =>  '',
             'sort'          =>  2,
+            'list'          =>  1,
             'display'       =>  1
         ],
         [
@@ -106,6 +111,7 @@ class CofficeConst
             'default'       =>  '',
             'tag'           =>  '',
             'sort'          =>  3,
+            'list'          =>  1,
             'display'       =>  1
         ],
         [
@@ -117,6 +123,7 @@ class CofficeConst
             'default'       =>  '',
             'tag'           =>  '',
             'sort'          =>  4,
+            'list'          =>  0,
             'display'       =>  0
         ],
         [
@@ -128,27 +135,32 @@ class CofficeConst
             'default'       =>  '',
             'tag'           =>  '',
             'sort'          =>  5,
+            'list'          =>  1,
             'display'       =>  1
         ]
     );
 
     static public $m_arr_SetupTablesList   = array(
         'className',  // 表名
+        'describe',   // 描述
         'ACL',        // 列名
         'columnACL',  // 类型
     );
     static public $m_arr_SetupTablesType = array(
         'className'  =>    'str',      // 表名
+        'describe'   =>    'str',      // 描述
         'ACL'        =>    'array',    // 列名
         'columnACL'  =>    'array',    // 类型
     );
     static public $m_arr_SetupTablesRule = array(
         'className'  =>    ['required','unique'],  // 表名
+        'describe'   =>    ['required'],           // 描述
         'ACL'        =>    ['required'],           // 列名
         'columnACL'  =>    ['required'],           // 类型
     );
     static public $m_arr_SetupTablesDesc = array(
         'className'  =>    '表名',        // 表名
+        'describe'   =>    '描述',        // 描述
         'ACL'        =>    '表ACL',       // 列名
         'columnACL'  =>    '数据ACL',     // 类型
     );
@@ -162,6 +174,7 @@ class CofficeConst
         'default',    // 默认值
         'tag',        // 标签
         'sort',       // 排序
+        'list',       // 列表展示
         'display',    // 客户端不可见
     );
     static public $m_arr_SetupTablesColumnListType = array(
@@ -173,6 +186,7 @@ class CofficeConst
         'default'    =>    'str',    // 默认值
         'tag'        =>    'str',    // 标签
         'sort'       =>    'int',    // 排序
+        'list'       =>    'int',    // 列表展示
         'display'    =>    'int',    // 客户端不可见
     );
     static public $m_arr_SetupTablesColumnListRule = array(
@@ -184,6 +198,7 @@ class CofficeConst
         'default'    =>    [],                     // 默认值
         'tag'        =>    [],                     // 标签
         'sort'       =>    ['integer'],            // 排序
+        'list'       =>    ['integer'],            // 列表展示
         'display'    =>    ['integer'],            // 客户端不可见
     );
     static public $m_arr_SetupTablesColumnListDesc = array(
@@ -195,6 +210,7 @@ class CofficeConst
         'default'    =>    '默认值',      // 默认值
         'tag'        =>    '标签',        // 标签
         'sort'       =>    '排序',        // 排序
+        'list'       =>    '列表展示',      // 客户端不可见
         'display'    =>    '客户端不可见',  // 客户端不可见
     );
 
@@ -212,24 +228,24 @@ class CofficeConst
     );
 
     //
-    //	common error codes
+    //  common error codes
     //
-    const ERROR_SUCCESS			            = 0;            //      successfully
-    const ERROR_ACCESS_CLASS_NO_ALLOW		= 100001;      //      access class no exist
-    const ERROR_ACCESS_NO_DATA		        = 100005;      //      access exec error
-    const ERROR_ACCESS_EXEC_ERROR		    = 100010;      //      access exec error
-    const ERROR_PARAMETER_ERROR 		    = 100015;      //      access exec error
-    const ERROR_USER_EXIST_ERROR 		    = 100020;      //      access exec error
-    const ERROR_USER_LOGIN_ERROR 		    = 100025;      //      access exec error
+    const ERROR_SUCCESS                     = 0;            //      successfully
+    const ERROR_ACCESS_CLASS_NO_ALLOW       = 100001;      //      access class no exist
+    const ERROR_ACCESS_NO_DATA              = 100005;      //      access exec error
+    const ERROR_ACCESS_EXEC_ERROR           = 100010;      //      access exec error
+    const ERROR_PARAMETER_ERROR             = 100015;      //      access exec error
+    const ERROR_USER_EXIST_ERROR            = 100020;      //      access exec error
+    const ERROR_USER_LOGIN_ERROR            = 100025;      //      access exec error
 
 
-    const ZH_ERROR_SUCCESS	                = '';      //      access class no exist
-    const ZH_ERROR_ACCESS_CLASS_NO_ALLOW	= '无权限操作';      //      access class no exist
-    const ZH_ERROR_NO_DATA	                = '无可操作数据';      //      access class no exist
-    const ZH_ERROR_ACCESS_EXEC_ERROR		= '操作失败';      //      access class no exist
-    const ZH_ERROR_PARAMETER_ERROR 		    = '参数错误';      //      access exec error
-    const ZH_ERROR_USER_EXIST_ERROR 		= '用户名已存在';      //      access exec error
-    const ZH_ERROR_USER_LOGIN_ERROR 		= '用户名或密码错误';      //      access exec error
+    const ZH_ERROR_SUCCESS                  = '';      //      access class no exist
+    const ZH_ERROR_ACCESS_CLASS_NO_ALLOW    = '无权限操作';      //      access class no exist
+    const ZH_ERROR_NO_DATA                  = '无可操作数据';      //      access class no exist
+    const ZH_ERROR_ACCESS_EXEC_ERROR        = '操作失败';      //      access class no exist
+    const ZH_ERROR_PARAMETER_ERROR          = '参数错误';      //      access exec error
+    const ZH_ERROR_USER_EXIST_ERROR         = '用户名已存在';      //      access exec error
+    const ZH_ERROR_USER_LOGIN_ERROR         = '用户名或密码错误';      //      access exec error
 
 //            app('db')->enableQueryLog();
 //            print_r(app('db')->getQueryLog());die;

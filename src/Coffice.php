@@ -226,7 +226,6 @@ Class Coffice
             else
             {
                 $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
-                $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
             }
         }
         else
@@ -259,7 +258,6 @@ Class Coffice
             else
             {
                 $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
-                $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
             }
         }
         else
@@ -297,7 +295,6 @@ Class Coffice
             else
             {
                 $nRet = CofficeConst::ERROR_ACCESS_EXEC_ERROR;
-                $sErroeMsg = CofficeConst::ZH_ERROR_ACCESS_EXEC_ERROR;
             }
         }
 

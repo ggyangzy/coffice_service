@@ -118,7 +118,7 @@ Class CofficeAuth{
 
             $this->appId        = $this->arrInput['app_id'];
 
-            $arrExist = app('db')->connection('mongodb_coffice')->table('app_list')->find( $this->appId );
+            $arrExist = app('db')->connection('mongodb_coffice')->table('_AppList')->find( $this->appId );
 
             if( CLib::IsArrayWithKeys( $arrExist ) )
             {
