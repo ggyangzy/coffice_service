@@ -173,6 +173,7 @@ class CofficeConst
         'describe',   // 描述
         'default',    // 默认值
         'tag',        // 标签
+        'formData',   // 表单数据
         'sort',       // 排序
         'list',       // 列表展示
         'display',    // 客户端不可见
@@ -185,6 +186,7 @@ class CofficeConst
         'describe'   =>    'str',    // 描述
         'default'    =>    'str',    // 默认值
         'tag'        =>    'str',    // 标签
+        'formData'   =>    'str',    // 表单数据
         'sort'       =>    'int',    // 排序
         'list'       =>    'int',    // 列表展示
         'display'    =>    'int',    // 客户端不可见
@@ -197,6 +199,7 @@ class CofficeConst
         'describe'   =>    ['required'],           // 描述
         'default'    =>    [],                     // 默认值
         'tag'        =>    [],                     // 标签
+        'formData'   =>    [],                     // 表单数据
         'sort'       =>    ['integer'],            // 排序
         'list'       =>    ['integer'],            // 列表展示
         'display'    =>    ['integer'],            // 客户端不可见
@@ -209,8 +212,9 @@ class CofficeConst
         'describe'   =>    '描述',        // 描述
         'default'    =>    '默认值',      // 默认值
         'tag'        =>    '标签',        // 标签
+        'formData'   =>    '表单数据',     // 表单数据
         'sort'       =>    '排序',        // 排序
-        'list'       =>    '列表展示',      // 客户端不可见
+        'list'       =>    '列表展示',     // 客户端不可见
         'display'    =>    '客户端不可见',  // 客户端不可见
     );
 

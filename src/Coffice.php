@@ -353,6 +353,26 @@ Class Coffice
                 if( $nRet )
                 {
                     $arrOutputData['_id'] = $arrTablesData['_id'];
+
+                    if( CofficeConst::$m_str_SetupTablesName == $this->m_sDBTableName )
+                    {
+                        app('db')->table( CofficeConst::$m_str_SetupTablesColumn )->insert(
+                            [
+                                '_id'        => self::getRandomID(),
+                                'className'  => $arrTablesData['className'],
+                                'column'     => 'ACL',
+                                'type'       => 'array',
+                                'verify'     => [],
+                                'describe'   => 'ACL权限',
+                                'default'    => '',
+                                'tag'        => 'checkbox',
+                                'sort'       => 999,
+                                'list'       => 1,
+                                'display'    => 1
+                            ]
+                         );
+                    }
+
                 }
 
             }
@@ -554,10 +574,9 @@ Class Coffice
                 && $this->m_sDBTableName != CofficeConst::$m_str_SetupTablesColumn
             )
             {
-                $arrExist = app('db')->table('_SetupTables')->where( 'className', $this->m_sDBTableName )->first();
-
                 if( empty( $this->m_arrInputData['ACL'] ) )
                 {
+                    $arrExist = app('db')->table('_SetupTables')->where( 'className', $this->m_sDBTableName )->first();
                     $arrPostData['ACL'] = $arrExist['columnACL'];
                 }
             }
